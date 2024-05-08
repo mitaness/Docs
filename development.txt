@@ -1,0 +1,117 @@
+10:47 AM 10/20/2023
+C:\test1\Angular Fundamentals\fundamentals\src\app\nav\navbar.component.html
+C:\test1\m7\ng-fun\src\app\routes.ts -- same but with styles - working on these btw
+
+11:27 AM 10/20/2023
+C:\tmp\abc\Pages\Index.cshtml.cs
+
+Parser
+C:\tmp\zoran\App2\App2\Program2.cs
+
+9:16 AM 10/22/2023
+back to fundamentals angular
+
+11:29 AM 10/31/2023
+C:\tmp\express> matt henry webapi courses
+C:\tmp\express>node app.js [closing]
+
+[starting] C:\tmp\core\foo
+dotnet new webapp
+
+8:34 AM 11/11/2023
+C:\tmp\engine build webgl FormControl FormGroup
+C:\tmp\direct direct2d pluralsight
+
+12:01 PM 11/26/2023
+C:\test1\xyz\src\app\welcome.component.ts -- children router-outlet wizard steps
+C:\tmp\ang\fang\package.json -- version 16 installed locally test signal
+
+C:\tmp\exp>node -v
+v18.12.1
+v21.4.0
+
+npm uninstall -g @angular/cli
+npm cache clean --force
+v20.10.0
+Angular CLI: 17.0.7
+Node: 20.10.0
+
+5:03 PM 1/5/2024
+ng new abc --minimal
+ng new abc --minimal
+in test1, angular 16
+test: call http test ReplaySubject
+
+9:33 AM 2/2/2024
+C:\Users\home\source\repos\2024\ConsoleApp2\ConsoleApp2\Program.cs
+https://www.codeproject.com/Articles/28785/Thread-synchronization-Wait-and-Pulse-demystified [ConsoleApp2]
+9:51 AM 1/29/2024
+win forms project
+"C:\Users\user01\source\repos\2019\10\WinForm\App1\Class1.cs"
+SetProcessDPIAwareness
+        [DllImport("shcore.dll")]
+        static extern int SetProcessDpiAwareness(int value);
+
+9:34 AM 2/2/2024
+test1\md md2 hash rfc in typescript
+
+
+10:43 AM 2/4/2024
+C:\tmp\WpfApp1\000\MainWindow.xaml Paul Sheriff
+
+10:22 AM 2/12/2024
+C:\tmp\core\zoran\Testability\Models\Program.cs
+Improving Testability Through Design
+
+5:03 PM 2/16/2024
+blazing trails ["C:\tmp\core\trails\readme.txt"]
+
+10:25 AM 2/17/2024
+while working on blazing trails, state management viktor savkin angular
+need intro to rx. state scan
+C:\tmp\core\zoran\Testability\Models\Class1.cs
+
+10:30 AM 2/25/2024
+Disabled windows services
+phone, telephony, remote access (multiple)
+Retail Demo, Print Spooler
+
+12:53 PM 3/22/2024
+network set a metered connection
+affects telemetry?
+
+1:09 PM 23-Mar-24
+C:\Users\home\source\repos\2024\ConsoleApp2\004\Program.cs
+12:05 PM 23-Mar-24
+Matt Backland Game AI Miner Bob
+
+11:20 AM 06-Apr-24
+C:\Users\home\source\repos\2024\ConsoleApp2\005\Program.cs
+pdf reference 1.0
+
+1:06 PM 09-Apr-24
+[C:\Users\home\source\repos\2024\ConsoleApp2\000\Program.cs]
+from Jan 24
+Tibi
+Pragmatic Test-Driven Development in C#
+Adam Tibi
+
+9:52 AM 12-Apr-24
+CTrl_Shift_Backspace Go to recent 2022
+
+9:28 AM 21-Apr-24
+C:\Users\home\source\repos\2024\ConsoleApp1\000\Program.cs
+MVVM Delphi POS application
+
+11:12 AM 26-Apr-24
+C:\tmp\core\gaz>dotnet --list-sdks
+2.1.505 [C:\Program Files\dotnet\sdk]
+3.1.414 [C:\Program Files\dotnet\sdk]
+8.0.101 [C:\Program Files\dotnet\sdk]
+
+11:16 AM 26-Apr-24
+C:\test1\m1 angular material
+
+1:34 PM 08-May-24
+C:\Users\home\source\repos\2024\ConsoleApp1\001\Program.cs
+train code Flood algo, minesweeper -> union find algo Algo 4 book
