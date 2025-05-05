@@ -1,0 +1,48 @@
+12:35 PM 05-May-25
+Entity Framework Julie L.
+EF Core 5, build on top of EF Core 3, which introduced a lot of new features, and breaking changes.
+
+History
+EF Core - 2016
+EF Core 2 - 2017
+EF Core 3 - 2019
+EF Core 5 - 2020
+
+Sql Server LocalDb (install with VS 2019)
+Adding nuget
+Microsoft.EntityFrameworkCore - only the basic, no provider
+start with the provider, it will pull in the core
+
+Microsoft.EntityFrameworkCore.SqlServer - for local db
+
+the db context class needs to know DataProvider and connection string
+
+:DbContext
+override OnConfiguring(options)
+ options.UseSqlServer(connection-string); a single statement
+ base.OnC.... -- can delete this one
+
+2024\zoran.txt:sql.txt:Data Source=(localdb)\MSSQLLocalDB;...
+sql.txt
+Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=<name>;Integrated Security=True;
+
+console app - UI
+static field Context _context = new Context()
+
+in main:
+_context.Database.EnsureCreated();
+
+Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HelloNHibernate;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False
+
+md samurai
+cd samurai
+dotnet new sln
+
+add 3 projects
+dotnet new list lib
+
+dotnet new class -h #adds a class
+dotnet new classlib -o samurai.domain
+dotnet new classlib -o samurai.data
+
+<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />

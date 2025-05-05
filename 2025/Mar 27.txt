@@ -1,0 +1,11 @@
+10:43 AM 27-Mar-25
+microsoft compatibility telemetry disable
+a working fan - is it the cause?
+Permanently Disabling Windows Compatibility Telemetry
+Task Scheduler
+
+Click Start, type Task Scheduler, and then press Enter.
+On the TaskScheduler window, go to this path: Task Scheduler Library\Microsoft\Windows\Application Experience.
+On the Application Experience folder, look for Microsoft Compatibility Appraiser.
+Right-click on it, select Disable, and then confirm to complete the process.
+Once you’re done, you may check if the issue persists.

@@ -1,0 +1,11 @@
+7:01 PM 13-Feb-25
+WCF the right way the manual way
+
+https://learn.microsoft.com/en-us/visualstudio/msbuild/walkthrough-creating-an-msbuild-project-file-from-scratch?view=vs-2022
+msbuild from scratch
+
+C:\Windows\Microsoft.NET\Framework\v4.0.30319
+$env:path+=';C:\Windows\Microsoft.NET\Framework\v4.0.30319'
+
+ToolPath="C:\Windows\Microsoft.NET\Framework\v2.0.50727"
+https://learn.microsoft.com/en-us/visualstudio/msbuild/csc-task?view=vs-2022

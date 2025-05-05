@@ -1,0 +1,60 @@
+12:20 PM 23-Feb-25
+look at 
+D:\fx2
+D:\2021\01
+
+10:40 AM 08-Mar-25
+C:\>dir /s ml.exe
+ Volume in drive C is OS
+ Volume Serial Number is 6AFE-2E0D
+
+ Directory of C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x86
+
+04/27/2019  06:03 AM           641,136 ml.exe
+               1 File(s)        641,136 bytes
+
+ Directory of C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\VC\Tools\MSVC\14.16.27023\bin\Hostx86\x86
+
+04/27/2019  06:03 AM           491,128 ml.exe
+               1 File(s)        491,128 bytes
+
+ Directory of C:\tmp\WinDDK\7600.16385.1\bin\x86
+
+02/08/2010  06:18 PM           352,768 ml.exe
+               1 File(s)        352,768 bytes
+
+     Total Files Listed:
+               3 File(s)      1,485,032 bytes
+               0 Dir(s)  141,879,484,416 bytes free
+
+C:\>
+
+PS C:\asm\001> notepad 001.asm
+PS C:\asm\001> fhx .\001.obj
+
+4C 01 03 00 8D 11 CC 67 FA 00 00 00 08 00 00 00
+4C 01 machine
+03 00 nr of sections
+8D 11 CC 67 time stamp
+FA 00 00 00 PointerToSymbolTable
+08 00 00 00 NumberOfSymbols - the number of entries in the table -> end of table = start of string table
+
+3 sections
+
+67cc118d
+
+PS C:\asm\001> [datetime]::UtcNow.AddSeconds(-0x67cc118d)
+
+Thursday, January 1, 1970 12:07:37 AM
+
+PointerToSymbolTable (4) the file offset of the coff symbol table
+
+000000F0   54 52 59 3A 53 54 41 52 54 20 40 63 6F 6D 70 2E  TRY:START @comp.
+
+The symbol table is an array of records, each 18 bytes long
+
+                                         40 63 6F 6D 70 2E  TRY:START @comp.
+00000100   69 64 09 78 95 00 FF FF 00 00 03 00 - 2E 74 65 78  id.x........tex
+00000110   74 00 00 00 00 00 00 00 01 0
+
+
