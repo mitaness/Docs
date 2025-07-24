@@ -1,0 +1,55 @@
+7:36 PM 17-Nov-24
+to boot F2,
+Virtualization enabled (checked)
+
+7:45 PM 17-Nov-24
+C:\WINDOWS\system32>wsl --install
+Installing: Virtual Machine Platform
+Virtual Machine Platform has been installed.
+Installing: Windows Subsystem for Linux
+Windows Subsystem for Linux has been installed.
+Installing: Windows Subsystem for Linux
+Catastrophic failure
+
+C:\>wsl --list
+Windows Subsystem for Linux has no installed distributions.
+Distributions can be installed by visiting the Microsoft Store:
+https://aka.ms/wslstore
+
+go to store ubuntu 22.04 LTS
+wsl -d ubuntu
+wsl -l -v
+uname -a
+lsb_release -a
+wsl --shutdown
+sudo apt install python3-pip
+sudo apt update
+
+https://superuser.com/questions/1185033/what-is-the-home-directory-on-windows-subsystem-for-linux
+\\wsl$\Ubuntu
+
+9:01 PM 17-Nov-24
+>wsl -- enter ubuntu
+su ken -- change user
+cd ~ -- go to home dir
+
+4:35 PM 28-Dec-24
+ken@DESKTOP-MM1UL9O:/root$ prolog
+Command 'prolog' not found, but can be installed with:
+apt install gprolog          # version 1.4.5.0-3, or
+apt install swi-prolog-core  # version 8.4.2+dfsg-2ubuntu1
+Ask your administrator to install one of them.
+ken@DESKTOP-MM1UL9O:/root$
+
+11:55 AM 03-Jan-25
+ken@DESKTOP-MM1UL9O:~/pl$ clang
+Command 'clang' not found, but can be installed with:
+apt install clang
+Please ask your administrator.
+
+2:33 PM 18-May-25
+to load a file in prolog
+[kb1].
+the dot is important, the interpreter waits for it and does nothing
+
+exit to leave wsl
