@@ -1,14 +1,5 @@
-7:36 PM 17-Nov-24
-to boot F2,
-Virtualization enabled (checked)
-
 7:45 PM 17-Nov-24
 C:\WINDOWS\system32>wsl --install
-Installing: Virtual Machine Platform
-Virtual Machine Platform has been installed.
-Installing: Windows Subsystem for Linux
-Windows Subsystem for Linux has been installed.
-Installing: Windows Subsystem for Linux
 Catastrophic failure
 
 C:\>wsl --list
@@ -34,15 +25,15 @@ su ken -- change user
 cd ~ -- go to home dir
 
 4:35 PM 28-Dec-24
-ken@DESKTOP-MM1UL9O:/root$ prolog
+ken@host:/root$ prolog
 Command 'prolog' not found, but can be installed with:
 apt install gprolog          # version 1.4.5.0-3, or
 apt install swi-prolog-core  # version 8.4.2+dfsg-2ubuntu1
 Ask your administrator to install one of them.
-ken@DESKTOP-MM1UL9O:/root$
+ken@host:/root$
 
 11:55 AM 03-Jan-25
-ken@DESKTOP-MM1UL9O:~/pl$ clang
+ken@host:~/pl$ clang
 Command 'clang' not found, but can be installed with:
 apt install clang
 Please ask your administrator.
