@@ -44,3 +44,14 @@ to load a file in prolog
 the dot is important, the interpreter waits for it and does nothing
 
 exit to leave wsl
+
+2:24 PM 24-Jul-25
+ken@me:/mnt/c/Users/home$ cat /etc/wsl.conf
+[boot]
+systemd=true
+[network]
+hostname=me
+generateHosts=false
+or true?
+https://www.srccodes.com/change-hostname-ubuntu-microsoft-windows-subsystem-for-linux-wsl-wsl2-wsl-conf-unable-resolve-hosts-name-service-not-known-list-running-shutdown-vm-srccodes/
+wsl --shutdown

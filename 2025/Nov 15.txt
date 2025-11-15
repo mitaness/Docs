@@ -1,0 +1,114 @@
+10:13 AM 15-Nov-25
+Data compression reference
+LZW Lempel Ziv Welch
+
+for i:=0 to 255 do
+append i as a 1-symbol string to the dictionary;
+append λ to the dictionary;
+di:=dictionary index of λ;
+repeat
+read(ch);
+if <<di,ch>> is in the dictionary then
+di:=dictionary index of <<di,ch>>;
+else
+output(di);
+append <<di,ch>> to the dictionary;
+di:=dictionary index of ch;
+endif;
+until end-of-input;
+
+
+ let input = Map [ (1, "a"); (2, "b") ]
+
+List.fold folder state list
+folder : 'State -> 'T -> 'State
+
+Map.add 3 "c"
+
+List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [1..3]
+
+val it: Map<int,int list> = map [(1, [1]); (2, [2]); (3, [3])]
+
+let start = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+
+let start = Map.add 101 [101; 105] start
+
+ start |> Map.maxKeyValue;;
+
+start |> Map.tryFindKey (fun k v -> v = [101; 107])
+
+> start |> Map.tryFindKey (fun k v -> v = [101; 105]);;
+val it: int option = Some 101
+
+let start = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+type State = { di: int; output: int list; map: Map<int, int list> }
+let init: State = { di = 98; output = []; map = start }
+type Folder = State -> int -> State
+let folder: Folder = fun s input ->
+ s
+List.fold folder init [97]
+
+----------------------------------
+let start = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+type State = { di: int; output: int list; map: Map<int, int list> }
+let init: State = { di = 98; output = []; map = start }
+type Folder = State -> int -> State
+let folder: Folder = fun s input ->
+ s
+List.fold folder init [97]
+
+the encoder inputs symbols one by one and accumulates them in a string I
+After each symbol is input and is concatenated to I
+
+type AddKey = Map<int, int list> -> int list -> Map<int, int list>
+let addKey: AddKey = fun m phrase ->
+ let key, _ = m |> Map.maxKeyValue
+ let next = key + 1
+ m |> Map.add next phrase
+
+let start = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+type State = { di: int; output: int list; map: Map<int, int list>; I: int list }
+let init: State = { di = 98; output = []; map = start; I = [98] }
+type Folder = State -> int -> State
+let folder: Folder = fun s input ->
+ let Ix = input :: s.I
+ // the dictionary is searched for string I
+ let attempt = s.map |> Map.tryFindKey (fun k v -> v = Ix)
+ // as long as found the process continues
+ match attempt with
+ | Some index -> { s with di = index; I = Ix }
+ | None -> 
+ // string I is in the dictionary
+ // but the Ix is not
+ // at this point the encoder (1) outputs the dictionary pointer to string I
+ // (2) saves string Ix (called a phrase) in the next available dictionary entry
+ // (3) initializes string I to symbol x
+ { s with di = input; output = s.di :: s.output; I = [input]; map = addKey s.map Ix }
+List.fold folder init [97]
+
+
+--------------
+test 
+b a
+
+------------
+b a a
+b a
+a a
+
+-----------
+b a b
+b a
+a b
+
+---------------
+b a b a
+b a
+a b
+b a
+
+-----------------------
+b a b a a
+b a
+a b
+b a a
