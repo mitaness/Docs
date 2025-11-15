@@ -86,6 +86,14 @@ let folder: Folder = fun s input ->
  { s with di = input; output = s.di :: s.output; I = [input]; map = addKey s.map Ix }
 List.fold folder init [97]
 
+type LZW = int list -> int list
+let lzw : LZW = fun xs ->
+ match xs with
+ | [] -> []
+ | x :: rs ->
+ let out = List.fold folder
+ xs
+
 
 --------------
 test 
@@ -112,3 +120,62 @@ b a b a a
 b a
 a b
 b a a
+
+---------------------
+
+b a a
+b a -> b
+a a -> a + a
+----
+b a b a
+b a -> b
+a b -> a
+b a
+
+> "ab"B;;
+val it: byte array = [|97uy; 98uy|]
+and I need int list
+
+List.ofArray "ab"B
+
+-------------------------------------
+
+
+type AddKey = Map<int, int list> -> int list -> Map<int, int list>
+let addKey: AddKey = fun m phrase ->
+ let key, _ = m |> Map.maxKeyValue
+ let next = key + 1
+ m |> Map.add next phrase
+
+let start = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+type State = { di: int; output: int list; map: Map<int, int list>; I: int list }
+
+type Folder = State -> int -> State
+let folder: Folder = fun s input ->
+ let Ix = input :: s.I
+ // the dictionary is searched for string I
+ let attempt = s.map |> Map.tryFindKey (fun k v -> v = Ix)
+ // as long as found the process continues
+ match attempt with
+ | Some index -> { s with di = index; I = Ix }
+ | None -> 
+ // string I is in the dictionary
+ // but the Ix is not
+ // at this point the encoder (1) outputs the dictionary pointer to string I
+ // (2) saves string Ix (called a phrase) in the next available dictionary entry
+ // (3) initializes string I to symbol x
+ { s with di = input; output = s.di :: s.output; I = [input]; map = addKey s.map Ix }
+
+type LZW = int list -> int list
+let lzw : LZW = fun xs ->
+ match xs with
+ | [] -> []
+ | x :: rs ->
+ let init: State = { di = x; output = []; map = start; I = [x] }
+ let out = List.fold folder init rs
+ let out2 = out.di :: out.output
+ List.rev out2
+
+type LZW1 = byte array -> int list
+let lzw1 : LZW1 = fun xs ->
+ xs |> List.ofArray |> List.map int |> lzw
