@@ -1,0 +1,150 @@
+b a b a a
+b a -> b
+a b -> a
+b a a -> + a
+
+sir sid eastman easily teases sea sick seals
+
+> lzw1 "sir sid eastman easily teases sea sick seals"B;;
+val it: int list =
+  [115; 105; 114; 32; 256; 100; 32; 101; 97; 115; 116; 109; 97; 110; 262; 264;
+   105; 108; 121; 32; 116; 263; 115; 101; 115; 259; 263; 259; 105; 99; 107;
+   281; 97; 108; 115]
+
+12:42 PM 16-Nov-25
+decoding
+1) Outputs
+2) Saves string Ix
+3) I = x
+
+a a a
+a a -> a
+a a
+
+97 99
+
+
+type AddKey = Map<int, int list> -> int list -> Map<int, int list>
+let addKey: AddKey = fun m phrase ->
+ let key, _ = m |> Map.maxKeyValue
+ let next = key + 1
+ m |> Map.add next phrase
+
+let start = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+type State = { di: int; output: int list; map: Map<int, int list>; I: int list }
+let init: State = { di = 97; output = []; map = start; I = [97] }
+type Folder = State -> int -> State
+let folder: Folder = fun s input ->
+ let Ix = input :: s.I
+ // the dictionary is searched for string I
+ let attempt = s.map |> Map.tryFindKey (fun k v -> v = Ix)
+ // as long as found the process continues
+ match attempt with
+ | Some index -> { s with di = index; I = Ix }
+ | None -> 
+ // string I is in the dictionary
+ // but the Ix is not
+ // at this point the encoder (1) outputs the dictionary pointer to string I
+ // (2) saves string Ix (called a phrase) in the next available dictionary entry
+ // (3) initializes string I to symbol x
+ { s with di = input; output = s.di :: s.output; I = [input]; map = addKey s.map Ix }
+List.fold folder init [97]
+
+
+-----------------------------------------------------
+#######################################
+
+10:28 AM 18-Nov-25
+
+let input = Map [ (1, "a"); (2, "b") ]
+input |> Map.add 1 "xyz"
+[1..5] |> List.pairwise
+(int * int) list = [(1, 2); (2, 3); (3, 4); (4, 5)]
+
+we will do this with outputs
+List.fold folder state list
+folder : 'State -> 'T -> 'State
+
+Map [(1, [1;2;3]); (2, [111;22])]
+
+let prev, next = a, b
+// find the prev key in the dictionary
+let value = Map.find prev
+// output; reverse + output
+
+-------------
+let m = Map [(1, [1;2;3]); (2, [111;22])]
+type S = Map<int, int list>
+type State = { m: S; out: int list } 
+
+type Test = State -> (int * int) -> State
+let test : Test = fun s xy ->
+ let prev, next = xy
+ let value = s.m |> Map.find prev
+ let value1 = -1 :: value
+ // add the phrase to the dictionary
+ { s with out = s.out @ (List.rev value) }
+
+let init = { State.m = m; out = [] }
+List.fold test init [1,2]
+
+> List.fold test init [1,2; 2, 3] ;;
+val it: State = { m = map [(1, [1; 2; 3]); (2, [111; 22])]
+                  out = [3; 2; 1; 22; 111] } 
+
+
+-----------------------------------------------
+let m = Map [(1, [1;2;3]); (2, [111;22])]
+type S = Map<int, int list>
+type State = { m: S; out: int list } 
+
+type Test = State -> (int * int) -> State
+let test : Test = fun s xy ->
+ let prev, next = xy
+ let value = s.m |> Map.find prev
+ // let value1 = -1 :: value
+ // add the phrase to the dictionary
+ let key, _ = s.m |> Map.maxKeyValue
+ let newK = key + 1
+ let nm = s.m |> Map.add newK value
+ // find next key
+ let val1 = nm |> Map.find next
+ let starts = List.rev val1 |> List.head
+ let nm = nm |> Map.add newK (starts :: value) 
+ { m = nm; out = s.out @ (List.rev value) }
+
+let init = { State.m = m; out = [] }
+List.fold test init [1, 2; 2, 3]
+
+
+------------------------------------
+//let m = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [97..98]
+let m = List.fold (fun m i -> Map.add i [i] m) Map.empty<int, int list> [0..255]
+type S = Map<int, int list>
+type State = { m: S; out: int list } 
+
+type Test = State -> (int * int) -> State
+let test : Test = fun s xy ->
+ let prev, next = xy
+ let value = s.m |> Map.find prev
+ // let value1 = -1 :: value
+ // add the phrase to the dictionary
+ let key, _ = s.m |> Map.maxKeyValue
+ let newK = key + 1
+ let nm = s.m |> Map.add newK value
+ // find next key
+ let val1 = nm |> Map.find next
+ let starts = List.rev val1 |> List.head
+ let nm = nm |> Map.add newK (starts :: value) 
+ { m = nm; out = s.out @ (List.rev value) }
+
+type Converter = int list -> State
+let convert: Converter = fun xs ->
+ let init = { State.m = m; out = [] }
+ let rs = List.fold test init (List.pairwise xs)
+ let last = List.last xs
+ let value = rs.m |> Map.find last
+ { rs with out = rs.out @ (List.rev value) }
+
+it.out |> List.map char
+
