@@ -1,0 +1,79 @@
+// https://www.emathhelp.net/calculators/linear-algebra/reduced-row-echelon-form-rref-calculator/
+
+let rec gcd a b =
+    if b = 0 then a
+    else gcd b (a % b)
+
+type Coef = Drob of num: int * denom: int | Celoe of int
+type AddFunc = Coef -> Coef -> Coef
+type Adding = int -> int -> int -> int -> Coef
+type Row = Coef list
+type AddRow = Row -> Row -> Row
+
+let adding:Adding = fun a b c d ->
+ let denom = b * d
+ let nomin = a*d+b*c
+ let common = gcd nomin denom
+ let denom = denom / common
+ let nomin = nomin / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+let add:AddFunc = fun x y ->
+ match x, y with
+ | Celoe a, Celoe b -> Celoe (a + b)
+ | Drob (a, b), Celoe c -> adding a b c 1
+ | Celoe a, Drob (b, c) -> adding a 1 b c
+ | Drob (a, b), Drob (c, d) -> adding a b c d
+
+let addRow:AddRow = fun x y ->
+ let zip = List.zip x y
+ List.map (fun (a, b) -> add a b) zip
+
+let (+.) (a:Row) (b:Row) = addRow a b
+
+type Multiplying = int -> int -> int -> int -> Coef
+let multiplying: Multiplying = fun a b c d ->
+ let nomin = a*c
+ let denom = b*d
+ let common = gcd nomin denom
+ let nomin = nomin / common
+ let denom = denom / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+type Scalar = Coef
+type Mult = Scalar -> Coef -> Coef
+let mult: Mult = fun k coef ->
+ let (a, b) = match k with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ let (c, d) = match coef with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ multiplying a b c d
+
+type MultRow = Scalar -> Row -> Row
+let multRow: MultRow = fun k ys -> List.map (fun y -> mult k y) ys
+
+let (.*.) (a:Scalar) (b:Row) = multRow a b
+let (.*!) (a:int) (b:Row) = multRow (Celoe a) b
+
+let t1 () =
+ let a = [2; 5; -8; 2; 2; 0] |> List.map Celoe
+ let b = [6; 2; -10; 6; 8; 6] |> List.map Celoe
+ let c = [3; 6; 2; 3; 5; 6] |> List.map Celoe
+ let d = [6; 7; -3; 6; 9; 9] |> List.map Celoe
+ let a = Drob (1, 2) .*. a
+ let b = -6 .*! a |> (+.) b
+ let c = -3 .*! a |> (+.) c
+ let d = -6 .*! a |> (+.) d
+ let b = Drob (1, -13) .*. b
+
+ let c = Drob (3, 2) .*. b |> (+.) c
+ let d = 8 .*! b |> (+.) d
+
+ let c = Drob (13, 161) .*. c
+ let b = Drob (14, 13) .*. c |> (+.) b
+ let a = 4 .*! c |> (+.) a
+ let a = Drob (-5, 2) .*. b |> (+.) a
+ a, b, c
+

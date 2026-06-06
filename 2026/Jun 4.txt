@@ -1,0 +1,185 @@
+8:27 AM 04-Jun-26
+[https://www.emathhelp.net/calculators/linear-algebra/reduced-row-echelon-form-rref-calculator/]
+f#
+[math]::pi
+[int]::MaxValue
+
+type Coef = Drob of num: int * denom: int | Celoe of int
+
+type AddFunc = Coef -> Coef -> Coef
+type AddFunc' = Coef -> Coef -> Coef
+let add:AddFunc = fun x y -> x
+
+> Drob (5,3);;
+val it: Coef = Drob (5, 3)
+
+> Celoe 3;;
+val it: Coef = Celoe 3
+
+> [1..3] |> List.map Celoe;;
+val it: Coef list = [Celoe 1; Celoe 2; Celoe 3]
+
+let add:AddFunc = fun x y ->
+ match x with
+ | Celoe a -> Celoe a
+ | Drob (a, b) -> Celoe b
+
+let add:AddFunc = fun x y ->
+ match x, y with
+ | Celoe a, Celoe b -> Celoe (a + b)
+ | Drob (a, b), Celoe c -> Celoe 1
+ | Celoe a, Drob (b, c) -> Celoe 1
+ | Drob (a, b), Drob (c, d) -> Celoe 1
+
+[gcd f#] source wikibooks
+
+let rec gcd a b =
+    if b = 0 then a
+    else gcd b (a % b)
+
+let add:AddFunc = fun x y ->
+ match x, y with
+ | Celoe a, Celoe b -> Celoe (a + b)
+ | Drob (a, b), Celoe c -> Celoe 1
+ | Celoe a, Drob (b, c) -> Celoe 1
+ | Drob (a, b), Drob (c, d) ->
+   let denom = b * d
+   let nom = a*d+b*c
+   let common = gcd nom denom
+   if common = 1 then Drob (nom, denom) else 
+
+
+--------------
+
+type Adding = int -> int -> int -> int -> Coef
+let adding:Adding = fun a b c d ->
+ let denom = b * d
+ let nomin = a*d+b*c
+ let common = gcd nomin denom
+ let denom = denom / common
+ let nomin = nomin / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+let add:AddFunc = fun x y ->
+ match x, y with
+ | Celoe a, Celoe b -> Celoe (a + b)
+ | Drob (a, b), Celoe c -> adding a b c 1
+ | Celoe a, Drob (b, c) -> adding a 1 b c
+ | Drob (a, b), Drob (c, d) -> adding a b c d
+
+
+test:
+type Adding = Coef -> Coef -> int
+let adding:Adding = fun (Drob (a, b)) (Drob (c, d)) -> 3
+
+//let (!+) (a:Row) (b:Row) = addRow a b -- doesn't work
+
+---------------------------------
+9:20 AM 04-Jun-26
+summary
+
+https://www.emathhelp.net/calculators/linear-algebra/reduced-row-echelon-form-rref-calculator/
+
+let rec gcd a b =
+    if b = 0 then a
+    else gcd b (a % b)
+
+type Coef = Drob of num: int * denom: int | Celoe of int
+type AddFunc = Coef -> Coef -> Coef
+type Adding = int -> int -> int -> int -> Coef
+type Row = Coef list
+type AddRow = Row -> Row -> Row
+
+let adding:Adding = fun a b c d ->
+ let denom = b * d
+ let nomin = a*d+b*c
+ let common = gcd nomin denom
+ let denom = denom / common
+ let nomin = nomin / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+let add:AddFunc = fun x y ->
+ match x, y with
+ | Celoe a, Celoe b -> Celoe (a + b)
+ | Drob (a, b), Celoe c -> adding a b c 1
+ | Celoe a, Drob (b, c) -> adding a 1 b c
+ | Drob (a, b), Drob (c, d) -> adding a b c d
+
+let addRow:AddRow = fun x y ->
+ let zip = List.zip x y
+ List.map (fun (a, b) -> add a b) zip
+
+let (+.) (a:Row) (b:Row) = addRow a b
+
+type Multiplying = int -> int -> int -> int -> Coef
+let multiplying: Multiplying = fun a b c d ->
+ let nomin = a*c
+ let denom = b*d
+ let common = gcd nomin denom
+ let nomin = nomin / common
+ let denom = denom / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+type Scalar = Coef
+type Mult = Scalar -> Coef -> Coef
+let mult: Mult = fun k coef ->
+ let (a, b) = match k with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ let (c, d) = match coef with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ multiplying a b c d
+
+type MultRow = Scalar -> Row -> Row
+let multRow: MultRow = fun k ys -> List.map (fun y -> mult k y) ys
+
+let (.*.) (a:Scalar) (b:Row) = multRow a b
+
+let a = [1; 5; 1] |> List.map Celoe
+let b = [2; 11; 5] |> List.map Celoe
+
+----------------------
+
+type Mult = Row -> Coef -> Row
+let mult: Mult = fun row koef -> row
+--------------------
+
+type Mult = Row -> Coef -> Row
+let mult: Mult = fun row koef ->
+ match koef with
+ | Celoe a -> row
+ | Drob (a, b) -> row
+
+------------------------
+
+type Multiplying = int -> int -> int -> int -> Coef
+let multiplying: Multiplying = fun a b c d ->
+ let nomin = a*c
+ let denom = b*d
+ let common = gcd nomin denom
+ let nomin = nomin / common
+ let denom = denom / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+type Scalar = Coef
+type Mult = Scalar -> Coef -> Coef
+let mult: Mult = fun k coef ->
+ let (a, b) = match k with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ let (c, d) = match coef with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ multiplying a b c d
+
+type MultRow = Scalar -> Row -> Row
+let multRow: MultRow = fun k ys -> List.map (fun y -> mult k y) ys
+
+let (.*.) (a:Scalar) (b:Row) = multRow a b
+
+
+Note: let (*.) (a:Scalar) (b:Coef) = mult a b -- not working, problems, waiting with -
+
+
+ 

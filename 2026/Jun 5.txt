@@ -1,0 +1,83 @@
+let rec gcd a b =
+    if b = 0 then a
+    else gcd b (a % b)
+
+type Coef = Drob of num: int * denom: int | Celoe of int
+type AddFunc = Coef -> Coef -> Coef
+type Adding = int -> int -> int -> int -> Coef
+type Row = Coef list
+type AddRow = Row -> Row -> Row
+
+let adding:Adding = fun a b c d ->
+ let denom = b * d
+ let nomin = a*d+b*c
+ let common = gcd nomin denom
+ let denom = denom / common
+ let nomin = nomin / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+let add:AddFunc = fun x y ->
+ match x, y with
+ | Celoe a, Celoe b -> Celoe (a + b)
+ | Drob (a, b), Celoe c -> adding a b c 1
+ | Celoe a, Drob (b, c) -> adding a 1 b c
+ | Drob (a, b), Drob (c, d) -> adding a b c d
+
+let addRow:AddRow = fun x y ->
+ let zip = List.zip x y
+ List.map (fun (a, b) -> add a b) zip
+
+let (+.) (a:Row) (b:Row) = addRow a b
+
+type Multiplying = int -> int -> int -> int -> Coef
+let multiplying: Multiplying = fun a b c d ->
+ let nomin = a*c
+ let denom = b*d
+ let common = gcd nomin denom
+ let nomin = nomin / common
+ let denom = denom / common
+ if denom = 1 then Celoe nomin else Drob (nomin, denom)
+
+type Scalar = Coef
+type Mult = Scalar -> Coef -> Coef
+let mult: Mult = fun k coef ->
+ let (a, b) = match k with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ let (c, d) = match coef with
+              | Celoe a -> (a, 1)
+              | Drob (a, b) -> (a, b)
+ multiplying a b c d
+
+type MultRow = Scalar -> Row -> Row
+let multRow: MultRow = fun k ys -> List.map (fun y -> mult k y) ys
+
+let (.*.) (a:Scalar) (b:Row) = multRow a b
+let (.*!) (a:int) (b:Row) = multRow (Celoe a) b
+
+let a = [2; 5; -8; 2; 2; 0] |> List.map Celoe
+let b = [3; 1; -5; 3; 4; 3] |> List.map Celoe
+let c = [3; 6; 2; 3; 5; 6] |> List.map Celoe
+let d = [6; 7; -3; 6; 9; 9] |> List.map Celoe
+
+let c = -1 .*! b |> (+.) c
+let d = -2 .*! b |> (+.) d
+let b = -1 .*! a |> (+.) b
+
+let temp = a
+let a = b
+let b = temp
+
+let b = -2 .*! a |> (+.) b
+let b = 2 .*! b
+let c = 5 .*! c
+
+let b = -1 .*! c |> (+.) b
+let c = -25 .*! b |> (+.) c
+let a = 4 .*! b |> (+.) a
+
+let c = Drob (1, 10) .*. c
+
+let c = Drob (1, 161) .*. c
+let b = 63 .*! c |> (+.) b
+let a = 249 .*! c |> (+.) a
